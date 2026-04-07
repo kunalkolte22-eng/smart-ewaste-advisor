@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart E-Waste Disposal Advisor</title>
+  <style>
+    :root {
+      --bg: #eef2f6;
+      --card: #ffffff;
+      --text: #12233d;
+      --muted: #5d6f84;
+      --line: #d2dbe5;
+      --brand1: #149c57;
+      --brand2: #167f95;
+      --good-bg: #ebfaf1;
+      --good-bd: #a6dfbc;
+      --warn-bg: #fff6e7;
+      --warn-bd: #ffd59a;
+      --bad-bg: #fff1f1;
+      --bad-bd: #efb7b7;
+      --shadow: 0 8px 24px rgba(18,35,61,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 26px;
+    }
+    .hero {
+      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      color: #fff;
+      text-align: center;
+      border-radius: 28px;
+      padding: 30px 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+    }
+    .hero h1 {
+      margin: 0 0 10px 0;
+      font-size: 40px;
+      line-height: 1.15;
+    }
+    .hero p {
+      margin: 0 auto;
+      max-width: 860px;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .card h2 {
+      margin: 0 0 14px 0;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+    .sub {
+      color: var(--muted);
+      margin: 0 0 14px 0;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .field {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      background: #fbfdff;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--muted);
+    }
+    .field select,
+    .field input {
+      width: 100%;
+      border: 1px solid #b8c5d3;
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 16px;
+      background: #fff;
+    }
+    .rec-box {
+      background: var(--good-bg);
+      border: 1px solid var(--good-bd);
+      border-radius: 16px;
+      padding: 13px 14px;
+      margin-bottom: 10px;
+      line-height: 1.55;
+    }
+    .hazard {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 15px;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+    .chips {
+      margin-bottom: 10px;
+    }
+    .chip {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    .chip.cat { background: #eef2ff; color: #3242a3; }
+    .chip.mat { background: #fff1f1; color: #9b2727; }
+    .hazard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .meta-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .recycler {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .recycler-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #ebf8fb;
+      color: #136678;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .muted {
+      color: var(--muted);
+    }
+    .awareness-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .do-card {
+      background: var(--good-bg);
+      border: 1px solid var(--good-bd);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .dont-card {
+      background: var(--bad-bg);
+      border: 1px solid var(--bad-bd);
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .list-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    li {
+      margin-bottom: 9px;
+      line-height: 1.5;
+    }
+    @media (max-width: 960px) {
+      .layout, .form-grid, .hazard-grid, .awareness-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>Smart E-Waste Disposal Advisor</h1>
+      <p>Smart E-Waste Disposal Advisor helps users identify the correct way to handle, recycle, and safely dispose of electronic waste while understanding its hazards and environmental impact.</p>
+    </div>
+
+    <div class="layout">
+      <div class="stack">
+        <div class="card">
+          <h2>Device Input</h2>
+          <div class="form-grid">
+            <div class="field">
+              <label for="deviceType">Device Type</label>
+              <select id="deviceType"></select>
+            </div>
+            <div class="field">
+              <label for="condition">Device Condition</label>
+              <select id="condition">
+                <option>Working</option>
+                <option>Partially Working</option>
+                <option>Dead</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="batteryPresent">Battery Present?</label>
+              <select id="batteryPresent">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="dataPresent">Contains Personal Data?</label>
+              <select id="dataPresent">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="quantity">Quantity</label>
+              <select id="quantity">
+                <option>Single Unit</option>
+                <option>2–10 Units</option>
+                <option>Bulk / Office Waste</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="location">Location</label>
+              <input id="location" type="text">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Recommendation</h2>
+          <div id="recommendations"></div>
+        </div>
+
+        <div class="card">
+          <h2>Hazard Information</h2>
+          <div id="hazards"></div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <h2>Recycler Suggestions</h2>
+          <div id="recyclers"></div>
+        </div>
+
+        <div class="card">
+          <h2>Awareness &amp; Do's / Don'ts</h2>
+          <div class="awareness-grid">
+            <div class="do-card">
+              <div class="list-title">Do's</div>
+              <ul id="dosList"></ul>
+            </div>
+            <div class="dont-card">
+              <div class="list-title">Don'ts</div>
+              <ul id="dontsList"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const deviceProfiles = {"Mobile Phone": {"category": "Mobile Phone / Laptop", "reusable": true, "dataRisk": true, "battery": true, "disposal": "Use brand take-back, refurbishment, or a certified recycler."}, "Laptop": {"category": "Mobile Phone / Laptop", "reusable": true, "dataRisk": true, "battery": true, "disposal": "Back up and securely wipe data. Prefer refurbishment; if dead, use an authorized recycler."}, "Monitor": {"category": "CRT Television / Monitor", "reusable": false, "dataRisk": false, "battery": false, "disposal": "Do not break the screen. Route it to an authorized dismantler or recycler."}, "Refrigerator / AC": {"category": "Refrigerator / AC", "reusable": true, "dataRisk": false, "battery": false, "disposal": "Refrigerant recovery must be handled by a licensed technician before recycling."}, "Washing Machine": {"category": "Washing Machine / Refrigerator", "reusable": true, "dataRisk": false, "battery": false, "disposal": "If repairable, donate or refurbish. Otherwise use an authorized dismantler."}, "Printer": {"category": "Printer / Toner", "reusable": true, "dataRisk": false, "battery": false, "disposal": "Seal toner or cartridges and return them through OEM take-back or a recycler."}, "Tube Light / CFL": {"category": "Tube Lights / CFL", "reusable": false, "dataRisk": false, "battery": false, "disposal": "Handle carefully without breaking and send to a lamp recycler."}};
+    const hazardsData = [{"category": "Mobile Phone / Laptop", "material": "Lithium-ion Battery", "healthRisk": "Fire, skin burns, toxic fumes", "environmentalRisk": "Li leachate poisons groundwater", "rule": "Hand to certified battery recycler only"}, {"category": "Mobile Phone / Laptop", "material": "Lead (solder)", "healthRisk": "Nervous system damage, IQ loss in children", "environmentalRisk": "Soil & water contamination", "rule": "Never landfill \u2014 recycle via CPCB center"}, {"category": "CRT Television / Monitor", "material": "Lead (funnel glass)", "healthRisk": "Brain damage, kidney failure", "environmentalRisk": "Persistent soil pollutant", "rule": "Only CRT-certified dismantler"}, {"category": "CRT Television / Monitor", "material": "Mercury (fluorescent lamp)", "healthRisk": "Neurological damage", "environmentalRisk": "Bioaccumulates in fish/food chain", "rule": "Sealed transport to Hg recycler"}, {"category": "Refrigerator / AC", "material": "CFC / HFC Refrigerant", "healthRisk": "Skin & eye irritant", "environmentalRisk": "Ozone depletion, global warming", "rule": "Licensed HVAC technician must recover gas"}, {"category": "Refrigerator / AC", "material": "Compressor Oil (PCB)", "healthRisk": "Carcinogenic", "environmentalRisk": "Persistent organic pollutant", "rule": "Dispose via hazardous waste handler"}, {"category": "Printer / Toner", "material": "Carbon Black (toner)", "healthRisk": "Lung irritation, possible carcinogen", "environmentalRisk": "Micro-particle air pollution", "rule": "Return toner cartridges to manufacturer"}, {"category": "Battery / Power Bank", "material": "Cadmium (NiCd)", "healthRisk": "Kidney damage, carcinogenic", "environmentalRisk": "Toxic heavy metal in soil", "rule": "Extended Producer Responsibility (EPR) return"}, {"category": "PCB / Motherboard", "material": "Brominated Flame Retardants", "healthRisk": "Hormone disruption", "environmentalRisk": "Dioxin release when burned", "rule": "Certified e-waste dismantler only"}, {"category": "Fluorescent Lamps", "material": "Mercury vapour", "healthRisk": "Acute poisoning if inhaled", "environmentalRisk": "Atmosphere + water contamination", "rule": "Sealed in original packaging, return to shop"}];
+    const recyclersData = [{
+        "name": "Electrofine Recycling",
+        "region": "Pune, Maharashtra",
+        "accepts": "Corporate & consumer e-waste",
+        "type": "Authorized Recycler / Collection Partner",
+        "website": "https://electrofine.co.in/"
+      },{"name": "E-Parisaraa Pvt Ltd", "region": "Bengaluru, KA", "accepts": "All e-waste categories", "type": "CPCB Authorized Recycler", "website": "www.e-parisaraa.com"}, {"name": "Attero Recycling Pvt Ltd", "region": "Noida, UP", "accepts": "Mobile, Laptop, Battery", "type": "ISO Certified Recycler", "website": "www.attero.in"}, {"name": "Ecoreco India", "region": "Mumbai, MH", "accepts": "Household & IT waste", "type": "EPR Collection Partner", "website": "www.ecoreco.com"}, {"name": "Cerebra Integrated Tech", "region": "Bengaluru, KA", "accepts": "IT & Telecom equipment", "type": "CPCB Authorized", "website": "www.cerebra.in"}, {"name": "Samsung Take-Back Program", "region": "Pan India", "accepts": "Samsung devices only", "type": "Brand Take-Back (EPR)", "website": "www.samsung.com/in/recycling"}, {"name": "Apple Trade-In / Recycling", "region": "Pan India", "accepts": "Apple devices only", "type": "Brand Take-Back", "website": "www.apple.com/in/shop/trade-in"}, {"name": "Dell Reconnect Program", "region": "Pan India", "accepts": "Dell & other brands", "type": "Brand Take-Back", "website": "www.dell.com/recycling"}, {"name": "ITC WOW (Wealth Out of Waste)", "region": "Delhi, Mumbai, Pune", "accepts": "Paper, Plastic, E-waste", "type": "Multi-material collector", "website": "www.itcwow.com"}, {"name": "Rajasthan Govt. Collection Drive", "region": "Jaipur, Jodhpur, Udaipur", "accepts": "All household e-waste", "type": "State Govt Initiative", "website": "rajasthan.gov.in / ULB Office"}, {"name": "CSPCB Collection Centers", "region": "All major Rajasthan cities", "accepts": "All categories", "type": "State Pollution Control Board", "website": "www.environment.rajasthan.gov.in"}];
+    const dosData = ["Wipe all personal data before handing over any device", "Use brand take-back programs (Samsung, Apple, Dell, HP etc.)", "Donate working devices to schools, NGOs or low-income households", "Separate batteries before disposing of devices", "Contact CPCB-authorized recyclers for bulk disposal", "Look for EPR compliance when buying new electronics", "Check Rajasthan SPCB for nearest authorized collection center", "Repair devices instead of replacing them when possible", "Keep original packaging for easier safe transport", "Ask your employer about bulk IT asset disposal programs", "\ud83d\udcca Key India E-Waste Facts (2024)", "India is 3rd largest e-waste generator globally", "Only ~22% of e-waste is formally recycled in India", "E-Waste Rules 2022 mandate EPR for all producers", "Mobile phones are the fastest growing e-waste stream", "1 million mobile phones contain ~15kg of copper, 350g of silver", "Rajasthan generates ~80,000 MT of e-waste annually"];
+    const dontsData = ["Never throw e-waste in regular household dustbin", "Never burn or incinerate electronic items", "Never break open lithium batteries \u2014 fire & toxic risk", "Never pour battery acid down the drain", "Never sell old devices without wiping data", "Never give e-waste to informal / roadside scrap dealers", "Never mix e-waste with food waste or regular recyclables", "Never landfill CRT monitors or TVs", "Never dismantle ACs or fridges yourself (refrigerant release)", "Never ignore e-waste \u2014 India generates 3.2M tonnes/year", "Source: Global E-Waste Monitor 2024", "Rest handled by informal sector", "Extended Producer Responsibility", "Urban India drives 70% of e-waste", "Significant recoverable value", "Source: CPCB State Data"];
+    const defaults = {"deviceType": "Washing Machine", "condition": "Partially Working", "batteryPresent": "Yes", "dataPresent": "No", "quantity": "Single Unit", "location": "Pune"};
+
+    const deviceTypeEl = document.getElementById('deviceType');
+    const conditionEl = document.getElementById('condition');
+    const batteryEl = document.getElementById('batteryPresent');
+    const dataEl = document.getElementById('dataPresent');
+    const quantityEl = document.getElementById('quantity');
+    const locationEl = document.getElementById('location');
+
+    const recommendationsEl = document.getElementById('recommendations');
+    const hazardsEl = document.getElementById('hazards');
+    const recyclersEl = document.getElementById('recyclers');
+    const dosListEl = document.getElementById('dosList');
+    const dontsListEl = document.getElementById('dontsList');
+
+    function populateDevices() {
+      deviceTypeEl.innerHTML = '';
+      Object.keys(deviceProfiles).forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+        deviceTypeEl.appendChild(option);
+      });
+    }
+
+    function setDefaults() {
+      deviceTypeEl.value = defaults.deviceType;
+      conditionEl.value = ['Working', 'Partially Working', 'Dead'].includes(defaults.condition) ? defaults.condition : 'Partially Working';
+      batteryEl.value = defaults.batteryPresent === 'No' ? 'No' : 'Yes';
+      dataEl.value = defaults.dataPresent === 'No' ? 'No' : 'Yes';
+      const qtyOptions = ['Single Unit', '2–10 Units', 'Bulk / Office Waste'];
+      quantityEl.value = qtyOptions.includes(defaults.quantity) ? defaults.quantity : 'Single Unit';
+      locationEl.value = defaults.location || 'Pune';
+    }
+
+    function getSelectedProfile() {
+      return deviceProfiles[deviceTypeEl.value] || deviceProfiles['Washing Machine'];
+    }
+
+    function buildRecommendations(profile) {
+      const items = [];
+      if ((conditionEl.value === 'Working' || conditionEl.value === 'Partially Working') && profile.reusable) {
+        items.push('Preferred action: repair, donate, or refurbish before recycling.');
+      } else {
+        items.push('Preferred action: send this item for formal recycling or dismantling.');
+      }
+
+      if (batteryEl.value === 'Yes' || profile.battery) {
+        items.push('Battery caution: isolate the battery only if it is safely removable and avoid puncture, heat, or short circuit.');
+      }
+
+      if (dataEl.value === 'Yes' || profile.dataRisk) {
+        items.push('Data safety: back up, sign out, and securely wipe all data before handover.');
+      }
+
+      if (quantityEl.value !== 'Single Unit') {
+        items.push('Bulk note: use an authorized recycler and keep collection records for compliance.');
+      }
+
+      items.push(profile.disposal);
+      return items;
+    }
+
+    function buildHazards(profile) {
+      return hazardsData.filter(h => h.category === profile.category || h.category === 'All Electronics');
+    }
+
+    function buildRecyclers() {
+      const loc = (locationEl.value || '').toLowerCase();
+      return recyclersData.filter(r => {
+        const region = (r.region || '').toLowerCase();
+        return region.includes('pan india') || region.includes('india') || region.includes('maharashtra') || loc.includes('pune');
+      });
+    }
+
+    function renderRecommendations() {
+      const profile = getSelectedProfile();
+      const items = buildRecommendations(profile);
+      recommendationsEl.innerHTML = '';
+      items.forEach(text => {
+        const div = document.createElement('div');
+        div.className = 'rec-box';
+        div.textContent = text;
+        recommendationsEl.appendChild(div);
+      });
+    }
+
+    function renderHazards() {
+      const profile = getSelectedProfile();
+      const items = buildHazards(profile);
+      hazardsEl.innerHTML = '';
+
+      if (!items.length) {
+        const div = document.createElement('div');
+        div.className = 'hazard';
+        div.textContent = 'No hazard records found for the selected device.';
+        hazardsEl.appendChild(div);
+        return;
+      }
+
+      items.forEach(h => {
+        const card = document.createElement('div');
+        card.className = 'hazard';
+        card.innerHTML = `
+          <div class="chips">
+            <span class="chip cat">${h.category}</span>
+            <span class="chip mat">${h.material}</span>
+          </div>
+          <div class="hazard-grid">
+            <div>
+              <div class="meta-title">Health Risk</div>
+              <div>${h.healthRisk}</div>
+            </div>
+            <div>
+              <div class="meta-title">Environmental Risk</div>
+              <div>${h.environmentalRisk}</div>
+            </div>
+            <div>
+              <div class="meta-title">Safe Disposal Rule</div>
+              <div>${h.rule}</div>
+            </div>
+          </div>
+        `;
+        hazardsEl.appendChild(card);
+      });
+    }
+
+    function renderRecyclers() {
+      const items = buildRecyclers();
+      recyclersEl.innerHTML = '';
+
+      if (!items.length) {
+        const div = document.createElement('div');
+        div.className = 'recycler';
+        div.textContent = 'No recycler suggestions found for the selected location.';
+        recyclersEl.appendChild(div);
+        return;
+      }
+
+      items.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'recycler';
+        let site = r.website || '#';
+        if (site !== '#' && !/^https?:\/\//i.test(site)) {
+          site = 'https://' + site;
+        }
+        card.innerHTML = `
+          <div class="recycler-top">
+            <div>
+              <div><strong>${r.name}</strong></div>
+              <div class="muted" style="margin-top:4px">${r.region}</div>
+            </div>
+            <div class="tag">${r.type}</div>
+          </div>
+          <div style="margin-top:10px"><strong>Accepts:</strong> ${r.accepts}</div>
+          <div style="margin-top:8px"><a href="${site}" target="_blank" rel="noreferrer">${r.website}</a></div>
+        `;
+        recyclersEl.appendChild(card);
+      });
+    }
+
+    function renderAwareness() {
+      dosListEl.innerHTML = '';
+      dontsListEl.innerHTML = '';
+
+      dosData.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        dosListEl.appendChild(li);
+      });
+
+      dontsData.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        dontsListEl.appendChild(li);
+      });
+    }
+
+    function renderAll() {
+      renderRecommendations();
+      renderHazards();
+      renderRecyclers();
+    }
+
+    function attachEvents() {
+      [deviceTypeEl, conditionEl, batteryEl, dataEl, quantityEl, locationEl].forEach(el => {
+        el.addEventListener('change', renderAll);
+        el.addEventListener('input', renderAll);
+      });
+    }
+
+    populateDevices();
+    setDefaults();
+    renderAwareness();
+    attachEvents();
+    renderAll();
+  </script>
+</body>
+</html>
